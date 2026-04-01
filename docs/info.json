@@ -3,14 +3,14 @@
   "slug": "restaurant-menu",
   "author": "<a href='https://yoursite.com'>Your Agency</a>",
   "homepage": "https://github.com/LouGriffith/restaurant-menu",
-  "version": "1.5.2",
+  "version": "1.5.6",
   "requires": "6.0",
   "tested": "6.7",
   "requires_php": "7.4",
-  "last_updated": "2026-03-30",
-  "download_url": "https://github.com/LouGriffith/restaurant-menu/releases/download/v1.5.2/restaurant-menu-plugin.zip",
+  "last_updated": "2026-04-01",
+  "download_url": "https://github.com/LouGriffith/restaurant-menu/releases/download/v1.5.6/restaurant-menu-plugin.zip",
   "sections": {
     "description": "A complete restaurant menu management system with multiple menus, categories, featured items, dietary badges, photo support, shortcodes, and Google Schema.org structured data.",
-    "changelog": "<h4>1.5.2</h4><ul><li>Added [rmm_info] shortcode — output name, phone, address, or cuisine from Settings anywhere on the site. Phone is a tappable link on mobile only.</li></ul><h4>1.5.1</h4><ul><li>Fixed plugin slug and GitHub Pages URL for correct update detection</li></ul><h4>1.5.0</h4><ul><li>Added layout shortcode attribute, [rmm_featured_item] shortcode, typography controls</li></ul><h4>1.4.0</h4><ul><li>Added Menus column and Filter by Menu dropdown</li></ul><h4>1.3.0</h4><ul><li>Added full Quick Edit support</li></ul><h4>1.2.0</h4><ul><li>Enforced Classic Editor</li></ul><h4>1.0.0</h4><ul><li>Initial release</li></ul>"
+    "changelog": "<h4>1.5.6</h4><ul><li>Fixed Restaurant Information fields overflowing their box — replaced form-table two-column layout with stacked label-above-input style, inputs now 100% width</li></ul><h4>1.5.5</h4><ul><li>Settings layout update: Quick Start top-left, Restaurant Info top-right, rcc_ class placeholders</li></ul><h4>1.5.4</h4><ul><li>Fixed Filter by Menu and shortcode PHP serialization mismatch</li></ul><h4>1.5.3</h4><ul><li>Settings redesign with Typography class name controls</li></ul><h4>1.5.2</h4><ul><li>Added [rmm_info] shortcode</li></ul><h4>1.5.1</h4><ul><li>Fixed plugin slug and update URL</li></ul><h4>1.5.0</h4><ul><li>Layout shortcode attribute, [rmm_featured_item], typography controls</li></ul><h4>1.0.0</h4><ul><li>Initial release</li></ul>"
   }
 }

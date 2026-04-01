@@ -187,11 +187,19 @@ function rmm_apply_menu_filter( $query ) {
     $menu_id = absint( $_GET['rmm_filter_menu'] ?? 0 );
     if ( ! $menu_id ) return;
 
-    // _rmm_menus is stored as a serialised array; LIKE search covers it.
+    // _rmm_menus is stored as a PHP serialized integer array, e.g. a:1:{i:0;i:393;}
+    // Integers have no quotes in serialized form, so we match ;i:{ID}; (mid-array)
+    // and :i:{ID};} (last element) to cover all positions.
     $query->set( 'meta_query', [
+        'relation' => 'OR',
         [
             'key'     => '_rmm_menus',
-            'value'   => '"' . $menu_id . '"',
+            'value'   => ';i:' . $menu_id . ';',
+            'compare' => 'LIKE',
+        ],
+        [
+            'key'     => '_rmm_menus',
+            'value'   => ':' . $menu_id . ';}',
             'compare' => 'LIKE',
         ],
     ] );
