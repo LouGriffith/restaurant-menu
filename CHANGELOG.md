@@ -5,24 +5,27 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [1.5.3] - 2026-04-01
+
+### Changed
+- Settings page layout: Typography moved to right column; Shortcode Reference and Quick Start moved to left column alongside Restaurant Information
+- Typography controls now show three columns per element: Element | Class Name | Size
+- Class Name field applies the selected font size to any matching CSS class in your theme, output as a CSS rule on wp_head
+- CSS custom properties reference collapsed into a details/summary disclosure to keep the panel compact
+
+---
+
 ## [1.5.2] - 2026-03-30
 
 ### Added
-- `[rmm_info]` shortcode — output any restaurant info field from Settings in one place, use anywhere on the site
-  - `[rmm_info field="name"]` — restaurant name
-  - `[rmm_info field="phone"]` — phone number (plain text on desktop; tappable tel: link on mobile ≤767px)
-  - `[rmm_info field="address"]` — address
-  - `[rmm_info field="cuisine"]` — cuisine type
-  - `before=""` and `after=""` attributes for wrapping HTML
-  - `fallback=""` attribute for empty-field fallback text
-  - Admins see an inline error if an invalid field value is used; visitors see nothing
+- [rmm_info] shortcode for name, phone, address, cuisine — phone is a tappable link on mobile only
 
 ---
 
 ## [1.5.1] - 2026-03-30
 
 ### Fixed
-- Plugin slug and GitHub Pages URL corrected to match LouGriffith/restaurant-menu repo — WordPress update detection now works
+- Plugin slug and GitHub Pages URL corrected for proper update detection
 
 ---
 
@@ -30,25 +33,22 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 - layout shortcode attribute on [restaurant_menu]
-- [rmm_featured_item] shortcode with random rotation per visit
-- Typography size controls in Settings and CSS custom properties
+- [rmm_featured_item] shortcode with random rotation
+- Typography size controls and CSS custom properties
 
 ---
 
 ## [1.4.0] - 2026-03-30
 
 ### Added
-- Menus column on Menu Items list table with filterable pills
-- Filter by Menu dropdown in list table toolbar
-- Quick edit AJAX refreshes Menus column in place
+- Menus column and Filter by Menu dropdown on Menu Items list table
 
 ---
 
 ## [1.3.0] - 2026-03-30
 
 ### Added
-- Quick Edit support for all six item fields
-- AJAX save with immediate DOM column refresh
+- Full Quick Edit support for all six item fields
 
 ---
 
@@ -71,3 +71,12 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 - Initial release
+
+---
+
+## [1.5.4] - 2026-04-01
+
+### Fixed
+- Filter by Menu dropdown on Menu Items list now correctly finds items — the LIKE query was searching for a quoted string (`"393"`) but WordPress serializes integer arrays without quotes (`a:1:{i:0;i:393;}`), so no results were ever returned. Now uses `;i:{ID};` and `:i:{ID};}` patterns with an OR relation to match all array positions.
+- Same serialization bug fixed in `[restaurant_menu]` shortcode — items assigned to a menu were not displaying.
+- Same fix applied to `[rmm_featured_item]` shortcode random rotation query.

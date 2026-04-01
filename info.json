@@ -1,0 +1,16 @@
+{
+  "name": "Restaurant Menu Manager",
+  "slug": "restaurant-menu",
+  "author": "<a href='https://yoursite.com'>Your Agency</a>",
+  "homepage": "https://github.com/LouGriffith/restaurant-menu",
+  "version": "1.5.4",
+  "requires": "6.0",
+  "tested": "6.7",
+  "requires_php": "7.4",
+  "last_updated": "2026-04-01",
+  "download_url": "https://github.com/LouGriffith/restaurant-menu/releases/download/v1.5.4/restaurant-menu-plugin.zip",
+  "sections": {
+    "description": "A complete restaurant menu management system with multiple menus, categories, featured items, dietary badges, photo support, shortcodes, and Google Schema.org structured data.",
+    "changelog": "<h4>1.5.4</h4><ul><li>Fixed: Filter by Menu on items list now correctly matches items — was using quoted string LIKE which never matched PHP serialized integers</li><li>Fixed: [restaurant_menu] and [rmm_featured_item] shortcodes had same serialization bug; menus with assigned items now display correctly</li></ul><h4>1.5.3</h4><ul><li>Settings page redesigned: Typography in right column, Shortcode Reference in left column, class name controls added to typography</li></ul><h4>1.5.2</h4><ul><li>Added [rmm_info] shortcode</li></ul><h4>1.5.1</h4><ul><li>Fixed plugin slug and update URL</li></ul><h4>1.5.0</h4><ul><li>Layout shortcode attribute, [rmm_featured_item], typography controls</li></ul><h4>1.0.0</h4><ul><li>Initial release</li></ul>"
+  }
+}
