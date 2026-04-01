@@ -46,8 +46,14 @@ function rmm_shortcode_handler( $atts ) {
 
     // ── Query items ───────────────────────────────────────────────────────────
     $meta_query = [
-        [ 'key' => '_rmm_menus',     'value' => $menu_id, 'compare' => 'LIKE' ],
-        [ 'key' => '_rmm_available', 'value' => '1',      'compare' => '='    ],
+        'relation' => 'AND',
+        // Match serialized PHP integer array: ;i:{ID}; or :i:{ID};}
+        [
+            'relation' => 'OR',
+            [ 'key' => '_rmm_menus', 'value' => ';i:' . $menu_id . ';', 'compare' => 'LIKE' ],
+            [ 'key' => '_rmm_menus', 'value' => ':' . $menu_id . ';}',  'compare' => 'LIKE' ],
+        ],
+        [ 'key' => '_rmm_available', 'value' => '1', 'compare' => '=' ],
     ];
     if ( $featured_only ) {
         $meta_query[] = [ 'key' => '_rmm_featured', 'value' => '1', 'compare' => '=' ];
@@ -234,9 +240,13 @@ function rmm_featured_item_shortcode( $atts ) {
             'orderby'        => 'rand',   // randomised at DB level
             'meta_query'     => [
                 'relation' => 'AND',
-                [ 'key' => '_rmm_menus',     'value' => '"' . $menu_id . '"', 'compare' => 'LIKE' ],
-                [ 'key' => '_rmm_featured',  'value' => '1',                  'compare' => '='    ],
-                [ 'key' => '_rmm_available', 'value' => '1',                  'compare' => '='    ],
+                [
+                    'relation' => 'OR',
+                    [ 'key' => '_rmm_menus', 'value' => ';i:' . $menu_id . ';', 'compare' => 'LIKE' ],
+                    [ 'key' => '_rmm_menus', 'value' => ':' . $menu_id . ';}',  'compare' => 'LIKE' ],
+                ],
+                [ 'key' => '_rmm_featured',  'value' => '1', 'compare' => '=' ],
+                [ 'key' => '_rmm_available', 'value' => '1', 'compare' => '=' ],
             ],
         ] );
 
