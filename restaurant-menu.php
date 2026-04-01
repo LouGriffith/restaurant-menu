@@ -3,7 +3,7 @@
  * Plugin Name: Restaurant Menu Manager
  * Plugin URI:  https://github.com/LouGriffith/restaurant-menu
  * Description: A complete restaurant menu management system with multiple menus, categories, featured items, dietary badges, photo support, shortcodes, and Google-friendly Schema.org structured data.
- * Version:     1.5.2
+ * Version:     1.5.4
  * Author:      Your Agency
  * License:     GPL-2.0+
  * Text Domain: restaurant-menu
@@ -11,7 +11,7 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-define( 'RMM_VERSION',     '1.5.2' );
+define( 'RMM_VERSION',     '1.5.4' );
 define( 'RMM_PLUGIN_DIR',  plugin_dir_path( __FILE__ ) );
 define( 'RMM_PLUGIN_URL',  plugin_dir_url( __FILE__ ) );
 
