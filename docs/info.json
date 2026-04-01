@@ -1,0 +1,16 @@
+{
+  "name": "Restaurant Menu Manager",
+  "slug": "restaurant-menu",
+  "author": "<a href='https://yoursite.com'>Your Agency</a>",
+  "homepage": "https://github.com/LouGriffith/restaurant-menu",
+  "version": "1.5.2",
+  "requires": "6.0",
+  "tested": "6.7",
+  "requires_php": "7.4",
+  "last_updated": "2026-03-30",
+  "download_url": "https://github.com/LouGriffith/restaurant-menu/releases/download/v1.5.2/restaurant-menu-plugin.zip",
+  "sections": {
+    "description": "A complete restaurant menu management system with multiple menus, categories, featured items, dietary badges, photo support, shortcodes, and Google Schema.org structured data.",
+    "changelog": "<h4>1.5.2</h4><ul><li>Added [rmm_info] shortcode — output name, phone, address, or cuisine from Settings anywhere on the site. Phone is a tappable link on mobile only.</li></ul><h4>1.5.1</h4><ul><li>Fixed plugin slug and GitHub Pages URL for correct update detection</li></ul><h4>1.5.0</h4><ul><li>Added layout shortcode attribute, [rmm_featured_item] shortcode, typography controls</li></ul><h4>1.4.0</h4><ul><li>Added Menus column and Filter by Menu dropdown</li></ul><h4>1.3.0</h4><ul><li>Added full Quick Edit support</li></ul><h4>1.2.0</h4><ul><li>Enforced Classic Editor</li></ul><h4>1.0.0</h4><ul><li>Initial release</li></ul>"
+  }
+}

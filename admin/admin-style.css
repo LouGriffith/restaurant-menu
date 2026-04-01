@@ -1,0 +1,24 @@
+/* Restaurant Menu Manager — Admin Styles */
+
+/* Column widths */
+.column-rmm_thumb    { width: 60px; }
+.column-rmm_price    { width: 100px; }
+.column-rmm_featured { width: 36px; text-align: center !important; }
+.column-rmm_avail    { width: 130px; }
+.column-rmm_menus    { width: 200px; }
+
+/* Menu pills in list table */
+.rmm-menu-pill {
+    display: inline-block;
+    padding: 2px 8px;
+    background: #e8f0fe;
+    color: #1a56db;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+    line-height: 1.6;
+}
+.rmm-menu-pill:hover { background: #1a56db; color: #fff; }
+.rmm-menu-pill.is-active-filter { background: #1a56db; color: #fff; }
