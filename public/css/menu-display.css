@@ -18,6 +18,7 @@
     --rmm-font-size-base:   1rem;        /* item description, body text        */
     --rmm-font-size-sm:     0.875rem;    /* price notes, badges                */
     --rmm-font-size-item:   1.0625rem;   /* item name                          */
+    --rmm-font-size-price:  1.0625rem;   /* item price                         */
     --rmm-font-size-section:1.25rem;     /* section headers                    */
     --rmm-font-size-note:   0.875rem;    /* menu footnote                      */
 
@@ -116,7 +117,7 @@
 }
 
 .rmm-item-price {
-    font-size:   var(--rmm-font-size-item);
+    font-size:   var(--rmm-font-size-price);
     font-weight: 700;
     color:       var(--rmm-color-price);
     white-space: nowrap;

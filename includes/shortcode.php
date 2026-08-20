@@ -154,13 +154,35 @@ function rmm_render_item( $item, $show_images, $layout ) {
     $price      = get_post_meta( $item->ID, '_rmm_price',      true );
     $price_note = get_post_meta( $item->ID, '_rmm_price_note', true );
     $featured   = get_post_meta( $item->ID, '_rmm_featured',   true );
+    $available  = get_post_meta( $item->ID, '_rmm_available',  true );
     $short_desc = get_post_meta( $item->ID, '_rmm_short_desc', true );
     $badges     = get_the_terms( $item->ID, 'rmm_badge' );
     $has_image  = has_post_thumbnail( $item->ID );
-    $item_class = 'rmm-item' . ( $featured === '1' ? ' rmm-featured' : '' );
+    if ( $available === '' ) $available = '1';
+
+    $item_class = 'rmm-item';
+    if ( $featured  === '1' ) $item_class .= ' rmm-featured';
+    if ( $available === '0' ) $item_class .= ' rmm-unavailable';
+
+    // Section ID for the inline editor
+    $sec_terms  = get_the_terms( $item->ID, 'rmm_section' );
+    $section_id = ( $sec_terms && ! is_wp_error( $sec_terms ) ) ? $sec_terms[0]->term_id : 0;
     ?>
     <div class="<?php echo esc_attr( $item_class ); ?>"
          itemscope itemprop="hasMenuItem" itemtype="https://schema.org/MenuItem">
+
+        <?php if ( current_user_can( 'edit_posts' ) ) :
+            $edit_url = get_edit_post_link( $item->ID ); ?>
+        <button type="button" class="rmm-edit-trigger"
+            title="Edit item"
+            data-id="<?php echo esc_attr( $item->ID ); ?>"
+            data-name="<?php echo esc_attr( $item->post_title ); ?>"
+            data-price="<?php echo esc_attr( $price ); ?>"
+            data-desc="<?php echo esc_attr( $short_desc ); ?>"
+            data-available="<?php echo esc_attr( $available ); ?>"
+            data-featured="<?php echo esc_attr( $featured ); ?>"
+            data-section="<?php echo esc_attr( $section_id ); ?>">✏️</button>
+        <?php endif; ?>
 
         <?php if ( $show_images && $has_image ) : ?>
         <div class="rmm-item-image">
