@@ -1,0 +1,185 @@
+/* ============================================================
+   Restaurant Menu Manager — Frontend Inline Edit
+   Only loaded for logged-in admins. Zero impact on guests.
+   ============================================================ */
+
+/* ── Item wrapper must be position:relative for the trigger ── */
+.rmm-item { position: relative; }
+
+/* ── Pencil trigger ──────────────────────────────────────────── */
+.rmm-edit-trigger {
+    position:        absolute;
+    top:             8px;
+    right:           8px;
+    display:         flex;
+    align-items:     center;
+    justify-content: center;
+    width:           28px;
+    height:          28px;
+    background:      rgba(0, 0, 0, 0.55);
+    color:           #fff;
+    border-radius:   50%;
+    font-size:       13px;
+    line-height:     1;
+    text-decoration: none;
+    opacity:         0;
+    transition:      opacity 0.15s ease, background 0.15s ease;
+    z-index:         10;
+    cursor:          pointer;
+    border:          none;
+}
+.rmm-item:hover .rmm-edit-trigger { opacity: 1; }
+.rmm-edit-trigger:hover            { background: rgba(0, 0, 0, 0.8); color: #fff; }
+.rmm-edit-trigger:focus            { opacity: 1; outline: 2px solid #2271b1; }
+
+/* Always visible on touch devices (no reliable hover) */
+@media ( hover: none ) {
+    .rmm-edit-trigger { opacity: 0.7; }
+}
+
+/* ── Inline panel ────────────────────────────────────────────── */
+.rmm-inline-panel {
+    display:       none; /* shown via JS slideDown */
+    margin:        0 0 12px;
+    border:        1px solid #d4a853;
+    border-radius: 6px;
+    background:    #fff;
+    box-shadow:    0 4px 20px rgba(0, 0, 0, 0.12);
+    overflow:      hidden;
+    font-family:   system-ui, -apple-system, sans-serif;
+    font-size:     14px;
+}
+
+.rmm-ip-inner { padding: 0; }
+
+/* Header */
+.rmm-ip-header {
+    display:         flex;
+    justify-content: space-between;
+    align-items:     center;
+    padding:         10px 14px;
+    background:      #1a1a1a;
+    color:           #fff;
+}
+.rmm-ip-header strong { font-size: 13px; font-weight: 600; }
+
+.rmm-ip-close {
+    background:  none;
+    border:      none;
+    color:       #aaa;
+    font-size:   16px;
+    cursor:      pointer;
+    line-height: 1;
+    padding:     0 2px;
+    transition:  color 0.15s;
+}
+.rmm-ip-close:hover { color: #fff; }
+
+/* Body */
+.rmm-ip-body {
+    padding:    14px;
+    display:    flex;
+    flex-direction: column;
+    gap:        12px;
+}
+
+.rmm-ip-field { display: flex; flex-direction: column; gap: 4px; }
+.rmm-ip-field label {
+    font-size:   11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color:       #666;
+}
+.rmm-ip-field input[type=text],
+.rmm-ip-field textarea,
+.rmm-ip-field select {
+    width:       100%;
+    box-sizing:  border-box;
+    padding:     7px 10px;
+    border:      1px solid #ddd;
+    border-radius: 4px;
+    font-size:   14px;
+    font-family: inherit;
+    color:       #1a1a1a;
+    transition:  border-color 0.15s;
+}
+.rmm-ip-field input[type=text]:focus,
+.rmm-ip-field textarea:focus,
+.rmm-ip-field select:focus {
+    outline:      none;
+    border-color: #d4a853;
+    box-shadow:   0 0 0 2px rgba(212, 168, 83, 0.2);
+}
+.rmm-ip-field textarea { resize: vertical; min-height: 70px; }
+
+/* Two-column row */
+.rmm-ip-row--half {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+/* Checkboxes row */
+.rmm-ip-row--checks {
+    display:    flex;
+    gap:        20px;
+    flex-wrap:  wrap;
+    padding:    6px 0 2px;
+}
+.rmm-ip-check {
+    display:     flex;
+    align-items: center;
+    gap:         6px;
+    font-size:   13px;
+    cursor:      pointer;
+    color:       #1a1a1a;
+}
+.rmm-ip-check input[type=checkbox] { margin: 0; cursor: pointer; }
+
+/* Footer */
+.rmm-ip-footer {
+    display:     flex;
+    align-items: center;
+    gap:         12px;
+    padding:     10px 14px;
+    background:  #f9f9f9;
+    border-top:  1px solid #eee;
+}
+
+.rmm-ip-save {
+    background:    #1a1a1a;
+    color:         #fff;
+    border:        none;
+    border-radius: 4px;
+    padding:       7px 16px;
+    font-size:     13px;
+    font-weight:   600;
+    cursor:        pointer;
+    transition:    background 0.15s;
+}
+.rmm-ip-save:hover:not(:disabled) { background: #d4a853; color: #1a1a1a; }
+.rmm-ip-save:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.rmm-ip-status {
+    font-size:  13px;
+    font-weight: 600;
+}
+.rmm-ip-ok  { color: #00a32a; }
+.rmm-ip-err { color: #d63638; }
+
+/* ── 86'd visual on the item itself ─────────────────────────── */
+.rmm-item.rmm-unavailable {
+    opacity: 0.5;
+}
+.rmm-item.rmm-unavailable .rmm-item-name::after {
+    content:      ' (86\'d)';
+    font-size:    0.75em;
+    color:        #d63638;
+    font-weight:  normal;
+    font-style:   italic;
+}
+
+@media ( max-width: 600px ) {
+    .rmm-ip-row--half { grid-template-columns: 1fr; }
+}

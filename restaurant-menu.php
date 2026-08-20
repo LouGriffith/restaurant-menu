@@ -1,17 +1,17 @@
 <?php
 /**
  * Plugin Name: Restaurant Menu Manager
- * Plugin URI:  https://github.com/LouGriffith/restaurant-menu
+ * Plugin URI:  https://lougriffith.com
  * Description: A complete restaurant menu management system with multiple menus, categories, featured items, dietary badges, photo support, shortcodes, and Google-friendly Schema.org structured data.
- * Version:     1.5.6
- * Author:      Your Agency
+ * Version:     1.5.8
+ * Author:      Lou Griffith
  * License:     GPL-2.0+
  * Text Domain: restaurant-menu
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-define( 'RMM_VERSION',     '1.5.6' );
+define( 'RMM_VERSION',     '1.5.8' );
 define( 'RMM_PLUGIN_DIR',  plugin_dir_path( __FILE__ ) );
 define( 'RMM_PLUGIN_URL',  plugin_dir_url( __FILE__ ) );
 
@@ -23,6 +23,7 @@ require_once RMM_PLUGIN_DIR . 'includes/shortcode.php';
 require_once RMM_PLUGIN_DIR . 'includes/schema.php';
 require_once RMM_PLUGIN_DIR . 'includes/settings.php';
 require_once RMM_PLUGIN_DIR . 'includes/info-shortcodes.php';
+require_once RMM_PLUGIN_DIR . 'includes/frontend-edit.php';
 require_once RMM_PLUGIN_DIR . 'includes/updater.php';
 require_once RMM_PLUGIN_DIR . 'admin/admin-columns.php';
 

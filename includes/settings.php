@@ -24,21 +24,21 @@ function rmm_typography_elements() {
         'menu_display' => [
             'label' => 'Menu Display',
             'elements' => [
-                'base'    => [ 'label' => 'Body / Description',   'prop' => '--rmm-font-size-base',    'default' => '1rem',      'placeholder' => 'rcc_body_description'   ],
-                'item'    => [ 'label' => 'Item Name',             'prop' => '--rmm-font-size-item',    'default' => '1.0625rem', 'placeholder' => 'rcc_item_name'          ],
-                'price'   => [ 'label' => 'Price',                 'prop' => '--rmm-font-size-item',    'default' => '1.0625rem', 'placeholder' => 'rcc_price'              ],
-                'section' => [ 'label' => 'Section Header',        'prop' => '--rmm-font-size-section', 'default' => '1.25rem',   'placeholder' => 'rcc_section_header'     ],
-                'sm'      => [ 'label' => 'Price Notes & Badges',  'prop' => '--rmm-font-size-sm',      'default' => '0.875rem',  'placeholder' => 'rcc_price_notes'        ],
-                'note'    => [ 'label' => 'Menu Footnote',         'prop' => '--rmm-font-size-note',    'default' => '0.875rem',  'placeholder' => 'rcc_menu_footnote'      ],
+                'base'    => [ 'label' => 'Body / Description',   'prop' => '--rmm-font-size-base',    'default' => '1rem',      'placeholder' => 'rmm_body_description'   ],
+                'item'    => [ 'label' => 'Item Name',             'prop' => '--rmm-font-size-item',    'default' => '1.0625rem', 'placeholder' => 'rmm_item_name'          ],
+                'price'   => [ 'label' => 'Price',                 'prop' => '--rmm-font-size-price',   'default' => '1.0625rem', 'placeholder' => 'rmm_price'              ],
+                'section' => [ 'label' => 'Section Header',        'prop' => '--rmm-font-size-section', 'default' => '1.25rem',   'placeholder' => 'rmm_section_header'     ],
+                'sm'      => [ 'label' => 'Price Notes & Badges',  'prop' => '--rmm-font-size-sm',      'default' => '0.875rem',  'placeholder' => 'rmm_price_notes'        ],
+                'note'    => [ 'label' => 'Menu Footnote',         'prop' => '--rmm-font-size-note',    'default' => '0.875rem',  'placeholder' => 'rmm_menu_footnote'      ],
             ],
         ],
         'spotlight' => [
             'label' => 'Featured Item Spotlight',
             'elements' => [
-                'spotlight_name'  => [ 'label' => 'Item Name',            'prop' => '--rmm-font-size-spotlight-name',  'default' => '1.5rem',    'placeholder' => 'rcc_spotlight_name'  ],
-                'spotlight_price' => [ 'label' => 'Price',                'prop' => '--rmm-font-size-spotlight-price', 'default' => '1.125rem',  'placeholder' => 'rcc_spotlight_price' ],
-                'spotlight_desc'  => [ 'label' => 'Description',          'prop' => '--rmm-font-size-spotlight-desc',  'default' => '1rem',      'placeholder' => 'rcc_spotlight_desc'  ],
-                'spotlight_meta'  => [ 'label' => 'Section / Menu Label', 'prop' => '--rmm-font-size-spotlight-meta',  'default' => '0.8125rem', 'placeholder' => 'rcc_spotlight_meta'  ],
+                'spotlight_name'  => [ 'label' => 'Item Name',            'prop' => '--rmm-font-size-spotlight-name',  'default' => '1.5rem',    'placeholder' => 'rmm_spotlight_name'  ],
+                'spotlight_price' => [ 'label' => 'Price',                'prop' => '--rmm-font-size-spotlight-price', 'default' => '1.125rem',  'placeholder' => 'rmm_spotlight_price' ],
+                'spotlight_desc'  => [ 'label' => 'Description',          'prop' => '--rmm-font-size-spotlight-desc',  'default' => '1rem',      'placeholder' => 'rmm_spotlight_desc'  ],
+                'spotlight_meta'  => [ 'label' => 'Section / Menu Label', 'prop' => '--rmm-font-size-spotlight-meta',  'default' => '0.8125rem', 'placeholder' => 'rmm_spotlight_meta'  ],
             ],
         ],
     ];
@@ -307,11 +307,12 @@ function rmm_render_settings_page() {
                                     CSS custom properties (for theme overrides)
                                 </summary>
                                 <pre style="background:#f6f7f7;padding:10px;border-radius:4px;font-size:11px;overflow-x:auto;white-space:pre-wrap;margin-top:6px">:root {
-  --rmm-font-size-base:            16px;
-  --rmm-font-size-item:            17px;
-  --rmm-font-size-section:         20px;
-  --rmm-font-size-sm:              14px;
-  --rmm-font-size-note:            14px;
+  --rmm-font-size-base:            16px;  /* body / description */
+  --rmm-font-size-item:            17px;  /* item name */
+  --rmm-font-size-price:           17px;  /* item price */
+  --rmm-font-size-section:         20px;  /* section header */
+  --rmm-font-size-sm:              14px;  /* price notes & badges */
+  --rmm-font-size-note:            14px;  /* menu footnote */
   --rmm-font-size-spotlight-name:  24px;
   --rmm-font-size-spotlight-price: 18px;
   --rmm-font-size-spotlight-desc:  16px;
