@@ -5,6 +5,25 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [1.5.9] - 2026-04-01
+
+### Added
+- Per-menu drag-and-drop sort order for menu items
+- Sort order stored as `_rmm_sort_order_by_menu` (serialized array keyed by menu ID → position). Global `_rmm_sort_order` remains as fallback when no per-menu value exists
+- **Frontend:** "⠿ Reorder Items" button appears above each menu section for logged-in editors. Click to enter sort mode — items get a drag cursor, dragging reorders them, Save commits via AJAX, Cancel restores the original order
+- **Admin:** When the Menu Items list is filtered to a specific menu, a yellow sort bar appears above the list with a drag handle (⠿) on each row. Drag rows to reorder, then click Save Order (auto-saves after 2 seconds of inactivity)
+- `includes/sort-order.php` — `rmm_get_item_menu_order()`, `rmm_set_item_menu_order()` helpers and `rmm_save_menu_order` AJAX handler
+- `public/js/frontend-sort.js` — frontend sort mode toggle, jQuery UI Sortable integration, AJAX save
+- `public/css/frontend-sort.css` — sort bar, drag states, placeholder styles for both frontend and admin
+- `admin/admin-sort.js` — admin list table drag-and-drop, auto-save timer, beforeunload guard
+
+### Changed
+- `[restaurant_menu]` shortcode now sorts items using per-menu order via PHP `usort()` after fetching, with global sort order as fallback
+- Item wrapper `<div>` now includes `data-id` attribute for JS targeting
+- `admin-columns.php` enqueue extended to load `jquery-ui-sortable` and `admin-sort.js` on the Menu Items list screen
+
+---
+
 ## [1.5.8] - 2026-04-01
 
 ### Added

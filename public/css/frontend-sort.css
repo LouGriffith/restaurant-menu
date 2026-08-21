@@ -1,0 +1,140 @@
+/* ============================================================
+   Restaurant Menu Manager — Sort Order UI
+   Frontend sort bar + admin drag states
+   Only loaded for logged-in editors.
+   ============================================================ */
+
+/* ── Frontend sort bar ───────────────────────────────────────── */
+.rmm-sort-bar {
+    display:     flex;
+    align-items: center;
+    gap:         10px;
+    padding:     6px 10px;
+    margin-bottom: 10px;
+    background:  rgba(0, 0, 0, 0.04);
+    border:      1px dashed #ccc;
+    border-radius: 5px;
+    font-family: system-ui, -apple-system, sans-serif;
+    font-size:   13px;
+}
+
+.rmm-sort-toggle,
+.rmm-sort-confirm,
+.rmm-sort-cancel {
+    border:        none;
+    border-radius: 4px;
+    padding:       5px 12px;
+    font-size:     12px;
+    font-weight:   600;
+    cursor:        pointer;
+    transition:    background 0.15s, color 0.15s;
+}
+
+.rmm-sort-toggle {
+    background: #1a1a1a;
+    color:      #fff;
+}
+.rmm-sort-toggle:hover { background: #d4a853; color: #1a1a1a; }
+
+.rmm-sort-confirm {
+    background: #00a32a;
+    color:      #fff;
+}
+.rmm-sort-confirm:hover:not(:disabled) { background: #007a1f; }
+.rmm-sort-confirm:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.rmm-sort-cancel {
+    background: #f0f0f0;
+    color:      #333;
+}
+.rmm-sort-cancel:hover { background: #ddd; }
+
+.rmm-sort-fe-status {
+    font-size:   12px;
+    font-weight: 600;
+}
+.rmm-sort-fe-ok  { color: #00a32a; }
+.rmm-sort-fe-err { color: #d63638; }
+
+/* ── Active sort mode: items get drag cursor + subtle highlight ── */
+.rmm-sorting-active .rmm-item {
+    cursor:        grab;
+    border:        1px dashed #d4a853 !important;
+    border-radius: 4px;
+    margin-bottom: 4px;
+    user-select:   none;
+    transition:    box-shadow 0.15s;
+}
+.rmm-sorting-active .rmm-item:active { cursor: grabbing; }
+.rmm-sorting-active .rmm-item:hover  { box-shadow: 0 2px 8px rgba(212,168,83,0.3); }
+
+/* Hide the pencil edit trigger while in sort mode */
+.rmm-sorting-active .rmm-edit-trigger { display: none !important; }
+
+/* Placeholder row while dragging */
+.rmm-fe-placeholder {
+    background:    rgba(212, 168, 83, 0.12);
+    border:        2px dashed #d4a853;
+    border-radius: 4px;
+    margin-bottom: 4px;
+}
+
+/* ── Admin list table sort bar ───────────────────────────────── */
+#rmm-sort-notice {
+    display:        none; /* shown by JS when filter is active */
+    align-items:    center;
+    gap:            12px;
+    padding:        8px 12px;
+    margin:         8px 0;
+    background:     #fff8e5;
+    border:         1px solid #d4a853;
+    border-radius:  5px;
+    font-size:      13px;
+    font-family:    system-ui, -apple-system, sans-serif;
+}
+
+#rmm-sort-notice .rmm-sort-save {
+    background:    #1a1a1a;
+    color:         #fff;
+    border:        none;
+    border-radius: 4px;
+    padding:       5px 14px;
+    font-size:     12px;
+    font-weight:   600;
+    cursor:        pointer;
+}
+#rmm-sort-notice .rmm-sort-save:hover:not(:disabled) { background: #d4a853; color: #1a1a1a; }
+#rmm-sort-notice .rmm-sort-save:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.rmm-sort-status { font-size: 12px; font-weight: 600; }
+.rmm-sort-dirty  { color: #996800; }
+.rmm-sort-ok     { color: #00a32a; }
+.rmm-sort-err    { color: #d63638; }
+
+/* ── Admin drag handle column ────────────────────────────────── */
+.column-rmm-handle {
+    width:      30px !important;
+    text-align: center !important;
+    padding:    8px 4px !important;
+}
+.rmm-drag-handle {
+    display:    inline-block;
+    font-size:  18px;
+    color:      #aaa;
+    cursor:     grab;
+    line-height:1;
+    user-select:none;
+}
+.rmm-drag-handle:hover { color: #1a1a1a; }
+.rmm-drag-handle:active { cursor: grabbing; }
+
+/* Placeholder row in admin list */
+.rmm-sort-placeholder {
+    background: #fff8e5;
+    border:     2px dashed #d4a853;
+    display:    table-row;
+}
+.rmm-sort-placeholder td { border: none; }
+
+/* Dim row while dragging */
+#the-list tr.ui-sortable-helper { opacity: 0.8; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
