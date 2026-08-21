@@ -1,0 +1,48 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Get version from tag
+        id: version
+        run: echo "VERSION=${GITHUB_REF_NAME#v}" >> $GITHUB_OUTPUT
+
+      - name: Build plugin zip
+        run: |
+          mkdir -p build/restaurant-menu
+          rsync -av --exclude='.git' \
+                    --exclude='.github' \
+                    --exclude='build' \
+                    --exclude='*.zip' \
+                    --exclude='.gitignore' \
+                    --exclude='README.md' \
+                    . build/restaurant-menu/
+          cd build
+          zip -r ../restaurant-menu-plugin.zip restaurant-menu/
+          cd ..
+          echo "Built: $(du -sh restaurant-menu-plugin.zip)"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: "v${{ steps.version.outputs.VERSION }}"
+          body: |
+            See CHANGELOG.md for details.
+
+            Install or update via **WP Admin → Plugins → Update Now**, or download and upload manually.
+          files: restaurant-menu-plugin.zip
+          draft: false
+          prerelease: false
