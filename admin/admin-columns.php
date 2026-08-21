@@ -169,6 +169,46 @@ function rmm_filter_by_menu_dropdown( $post_type, $which ) {
     <?php
 }
 
+
+
+/**
+ * Sort order notice bar — shown above the list when a menu filter is active.
+ * The JS shows/hides it; we always render it so JS can find it.
+ */
+add_action( 'restrict_manage_posts', 'rmm_sort_order_notice_bar', 20 );
+function rmm_sort_order_notice_bar( $post_type ) {
+    if ( $post_type !== 'rmm_menu_item' ) return;
+    $active = absint( $_GET['rmm_filter_menu'] ?? 0 );
+    $label  = $active ? esc_html( get_the_title( $active ) ) : '';
+    ?>
+    <div id="rmm-sort-notice" style="display:none;">
+        <strong>⠿ Drag rows to reorder</strong>
+        <?php if ( $label ) : ?>
+            <span style="color:#666">for <em><?php echo $label; ?></em></span>
+        <?php endif; ?>
+        <button type="button" class="rmm-sort-save">Save Order</button>
+        <span class="rmm-sort-status"></span>
+        <style>
+        #rmm-sort-notice { display:flex;align-items:center;gap:10px;padding:8px 12px;
+            margin:8px 0;background:#fff8e5;border:1px solid #d4a853;border-radius:5px;font-size:13px; }
+        .rmm-sort-save { background:#1a1a1a;color:#fff;border:none;border-radius:4px;
+            padding:5px 14px;font-size:12px;font-weight:600;cursor:pointer; }
+        .rmm-sort-save:hover:not(:disabled) { background:#d4a853;color:#1a1a1a; }
+        .rmm-sort-save:disabled { opacity:.6;cursor:not-allowed; }
+        .rmm-sort-status { font-size:12px;font-weight:600; }
+        .rmm-sort-dirty  { color:#996800; }
+        .rmm-sort-ok     { color:#00a32a; }
+        .rmm-sort-err    { color:#d63638; }
+        .column-rmm-handle { width:30px!important;text-align:center!important;padding:8px 4px!important; }
+        .rmm-drag-handle { font-size:18px;color:#aaa;cursor:grab;line-height:1;user-select:none; }
+        .rmm-drag-handle:hover { color:#1a1a1a; }
+        .rmm-sort-placeholder { background:#fff8e5;border:2px dashed #d4a853;display:table-row; }
+        #the-list tr.ui-sortable-helper { opacity:.8;box-shadow:0 4px 12px rgba(0,0,0,.15); }
+        </style>
+    </div>
+    <?php
+}
+
 /**
  * Apply the menu filter to the WP_Query when the dropdown is set.
  * We filter by _rmm_menus post meta containing the selected menu ID.
@@ -411,6 +451,22 @@ function rmm_quick_edit_scripts( $hook ) {
     wp_localize_script( 'rmm-quick-edit', 'rmmQE', [
         'ajaxUrl' => admin_url( 'admin-ajax.php' ),
         'nonce'   => wp_create_nonce( 'rmm_quick_edit_save' ),
+    ] );
+
+    // Sort order drag-and-drop (only useful when a menu filter is active)
+    $active_menu = absint( $_GET['rmm_filter_menu'] ?? 0 );
+    wp_enqueue_script( 'jquery-ui-sortable' );
+    wp_enqueue_script(
+        'rmm-admin-sort',
+        RMM_PLUGIN_URL . 'admin/admin-sort.js',
+        [ 'jquery', 'jquery-ui-sortable' ],
+        RMM_VERSION,
+        true
+    );
+    wp_localize_script( 'rmm-admin-sort', 'rmmSort', [
+        'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+        'nonce'   => wp_create_nonce( 'rmm_sort_order' ),
+        'menuId'  => $active_menu,
     ] );
 }
 

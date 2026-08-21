@@ -72,8 +72,9 @@ function rmm_shortcode_handler( $atts ) {
         'post_status'    => 'publish',
         'posts_per_page' => $atts['limit'] ? absint( $atts['limit'] ) : -1,
         'meta_query'     => $meta_query,
-        'meta_key'       => '_rmm_sort_order',
+        // Fetch all then sort in PHP so per-menu order takes priority over global
         'orderby'        => 'meta_value_num',
+        'meta_key'       => '_rmm_sort_order',
         'order'          => 'ASC',
     ];
     if ( $tax_query ) {
@@ -84,6 +85,13 @@ function rmm_shortcode_handler( $atts ) {
     if ( empty( $items ) ) {
         return '<p class="rmm-empty">No menu items found.</p>';
     }
+
+    // Sort by per-menu order if available, fall back to global _rmm_sort_order
+    usort( $items, function( $a, $b ) use ( $menu_id ) {
+        $order_a = rmm_get_item_menu_order( $a->ID, $menu_id );
+        $order_b = rmm_get_item_menu_order( $b->ID, $menu_id );
+        return $order_a <=> $order_b;
+    } );
 
     // ── Group by section ──────────────────────────────────────────────────────
     $sections = [];
@@ -169,6 +177,7 @@ function rmm_render_item( $item, $show_images, $layout ) {
     $section_id = ( $sec_terms && ! is_wp_error( $sec_terms ) ) ? $sec_terms[0]->term_id : 0;
     ?>
     <div class="<?php echo esc_attr( $item_class ); ?>"
+         data-id="<?php echo esc_attr( $item->ID ); ?>"
          itemscope itemprop="hasMenuItem" itemtype="https://schema.org/MenuItem">
 
         <?php if ( current_user_can( 'edit_posts' ) ) :

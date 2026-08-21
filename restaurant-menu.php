@@ -3,7 +3,7 @@
  * Plugin Name: Restaurant Menu Manager
  * Plugin URI:  https://lougriffith.com
  * Description: A complete restaurant menu management system with multiple menus, categories, featured items, dietary badges, photo support, shortcodes, and Google-friendly Schema.org structured data.
- * Version:     1.5.8
+ * Version:     1.5.9
  * Author:      Lou Griffith
  * License:     GPL-2.0+
  * Text Domain: restaurant-menu
@@ -11,7 +11,7 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-define( 'RMM_VERSION',     '1.5.8' );
+define( 'RMM_VERSION',     '1.5.9' );
 define( 'RMM_PLUGIN_DIR',  plugin_dir_path( __FILE__ ) );
 define( 'RMM_PLUGIN_URL',  plugin_dir_url( __FILE__ ) );
 
@@ -24,6 +24,7 @@ require_once RMM_PLUGIN_DIR . 'includes/schema.php';
 require_once RMM_PLUGIN_DIR . 'includes/settings.php';
 require_once RMM_PLUGIN_DIR . 'includes/info-shortcodes.php';
 require_once RMM_PLUGIN_DIR . 'includes/frontend-edit.php';
+require_once RMM_PLUGIN_DIR . 'includes/sort-order.php';
 require_once RMM_PLUGIN_DIR . 'includes/updater.php';
 require_once RMM_PLUGIN_DIR . 'admin/admin-columns.php';
 
@@ -52,6 +53,28 @@ function rmm_enqueue_public_assets() {
         RMM_VERSION,
         true
     );
+
+    // Frontend sort: only for editors
+    if ( current_user_can( 'edit_posts' ) ) {
+        wp_enqueue_style(
+            'rmm-frontend-sort',
+            RMM_PLUGIN_URL . 'public/css/frontend-sort.css',
+            [ 'rmm-public' ],
+            RMM_VERSION
+        );
+        wp_enqueue_script( 'jquery-ui-sortable' );
+        wp_enqueue_script(
+            'rmm-frontend-sort',
+            RMM_PLUGIN_URL . 'public/js/frontend-sort.js',
+            [ 'jquery', 'jquery-ui-sortable' ],
+            RMM_VERSION,
+            true
+        );
+        wp_localize_script( 'rmm-frontend-sort', 'rmmFESort', [
+            'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+            'nonce'   => wp_create_nonce( 'rmm_sort_order' ),
+        ] );
+    }
 }
 
 // ─── Enqueue admin assets ─────────────────────────────────────────────────────
