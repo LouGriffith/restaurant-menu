@@ -4,7 +4,6 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 add_action( 'init', 'rmm_register_post_types' );
 function rmm_register_post_types() {
 
-    // ── Menu (container: Dinner Menu, Lunch Menu, etc.) ──────────────────────
     register_post_type( 'rmm_menu', [
         'labels' => [
             'name'               => 'Menus',
@@ -21,13 +20,12 @@ function rmm_register_post_types() {
         'public'          => false,
         'show_ui'         => true,
         'show_in_menu'    => 'edit.php?post_type=rmm_menu_item',
-        'show_in_rest'    => false, // Classic Editor — no block editor
+        'show_in_rest'    => false,
         'supports'        => [ 'title', 'thumbnail' ],
         'menu_icon'       => 'dashicons-food',
         'capability_type' => 'post',
     ] );
 
-    // ── Menu Item ─────────────────────────────────────────────────────────────
     register_post_type( 'rmm_menu_item', [
         'labels' => [
             'name'               => 'Menu Items',
@@ -44,7 +42,7 @@ function rmm_register_post_types() {
         'public'          => false,
         'show_ui'         => true,
         'show_in_menu'    => true,
-        'show_in_rest'    => false, // Classic Editor — no block editor
+        'show_in_rest'    => false,
         'supports'        => [ 'title', 'thumbnail' ],
         'menu_icon'       => 'dashicons-carrot',
         'capability_type' => 'post',
@@ -52,7 +50,6 @@ function rmm_register_post_types() {
     ] );
 }
 
-// ── Enforce Classic Editor for both post types ────────────────────────────────
 add_filter( 'use_block_editor_for_post_type', 'rmm_disable_block_editor', 10, 2 );
 function rmm_disable_block_editor( $use_block_editor, $post_type ) {
     if ( in_array( $post_type, [ 'rmm_menu', 'rmm_menu_item' ], true ) ) {
@@ -61,7 +58,6 @@ function rmm_disable_block_editor( $use_block_editor, $post_type ) {
     return $use_block_editor;
 }
 
-// ── Remove default content editor from item edit screen ──────────────────────
 add_action( 'init', 'rmm_remove_content_editor', 99 );
 function rmm_remove_content_editor() {
     remove_post_type_support( 'rmm_menu_item', 'editor' );

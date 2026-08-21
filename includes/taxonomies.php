@@ -4,7 +4,6 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 add_action( 'init', 'rmm_register_taxonomies' );
 function rmm_register_taxonomies() {
 
-    // ── Menu Section (Appetizers, Salads, Entrées, Desserts, etc.) ────────────
     register_taxonomy( 'rmm_section', 'rmm_menu_item', [
         'labels' => [
             'name'          => 'Menu Sections',
@@ -22,7 +21,6 @@ function rmm_register_taxonomies() {
         'rewrite'           => false,
     ] );
 
-    // ── Dietary / Badge Flags ─────────────────────────────────────────────────
     register_taxonomy( 'rmm_badge', 'rmm_menu_item', [
         'labels' => [
             'name'          => 'Dietary Badges',
@@ -38,7 +36,6 @@ function rmm_register_taxonomies() {
     ] );
 }
 
-// ── Seed default badges on first run ─────────────────────────────────────────
 add_action( 'init', 'rmm_seed_default_badges', 20 );
 function rmm_seed_default_badges() {
     $defaults = [

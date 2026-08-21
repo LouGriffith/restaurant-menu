@@ -3,18 +3,14 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 add_action( 'add_meta_boxes', 'rmm_add_meta_boxes' );
 function rmm_add_meta_boxes() {
-
     add_meta_box( 'rmm_item_details', '🍽️ Item Details',
         'rmm_render_item_details_box', 'rmm_menu_item', 'normal', 'high' );
-
     add_meta_box( 'rmm_item_menus', '📋 Assign to Menus',
         'rmm_render_item_menus_box', 'rmm_menu_item', 'side', 'default' );
-
     add_meta_box( 'rmm_menu_settings', '⚙️ Menu Display Settings',
         'rmm_render_menu_settings_box', 'rmm_menu', 'normal', 'high' );
 }
 
-// ── Item Details ──────────────────────────────────────────────────────────────
 function rmm_render_item_details_box( $post ) {
     wp_nonce_field( 'rmm_save_item_details', 'rmm_item_nonce' );
 
@@ -26,7 +22,7 @@ function rmm_render_item_details_box( $post ) {
     $short_desc = get_post_meta( $post->ID, '_rmm_short_desc', true );
     $gallery    = get_post_meta( $post->ID, '_rmm_gallery',    true );
 
-    if ( $avail === '' ) $avail = '1';
+    if ( $avail === '' )      $avail      = '1';
     if ( $sort_order === '' ) $sort_order = 10;
     ?>
     <style>
@@ -100,11 +96,10 @@ function rmm_render_item_details_box( $post ) {
     <?php
 }
 
-// ── Assign to Menus ───────────────────────────────────────────────────────────
 function rmm_render_item_menus_box( $post ) {
     wp_nonce_field( 'rmm_save_item_menus', 'rmm_menus_nonce' );
 
-    $assigned = (array) get_post_meta( $post->ID, '_rmm_menus', true );
+    $assigned  = (array) get_post_meta( $post->ID, '_rmm_menus', true );
     $all_menus = get_posts( [
         'post_type'      => 'rmm_menu',
         'post_status'    => 'publish',
@@ -127,7 +122,6 @@ function rmm_render_item_menus_box( $post ) {
     }
 }
 
-// ── Menu Display Settings ─────────────────────────────────────────────────────
 function rmm_render_menu_settings_box( $post ) {
     wp_nonce_field( 'rmm_save_menu_settings', 'rmm_menu_settings_nonce' );
 
@@ -135,7 +129,6 @@ function rmm_render_menu_settings_box( $post ) {
     $show_img = get_post_meta( $post->ID, '_rmm_show_images',   true );
     $show_sec = get_post_meta( $post->ID, '_rmm_show_sections', true );
     $note     = get_post_meta( $post->ID, '_rmm_menu_note',     true );
-    $shortcode_id = $post->ID;
 
     if ( $show_img === '' ) $show_img = '1';
     if ( $show_sec === '' ) $show_sec = '1';
@@ -177,34 +170,32 @@ function rmm_render_menu_settings_box( $post ) {
     </div>
     <div class="rmm-check-row">
         <input type="checkbox" id="rmm_show_sections" name="rmm_show_sections" value="1" <?php checked( $show_sec, '1' ); ?>>
-        <label for="rmm_show_sections">Show section headers (Appetizers, Entrées, etc.)</label>
+        <label for="rmm_show_sections">Show section headers</label>
     </div>
 
     <div style="margin-top:12px">
-        <label style="font-weight:600;font-size:13px;display:block;margin-bottom:4px">Menu Note <span style="font-weight:400;color:#888">(shown at bottom of menu)</span></label>
+        <label style="font-weight:600;font-size:13px;display:block;margin-bottom:4px">Menu Note</label>
         <textarea name="rmm_menu_note" style="width:100%;min-height:60px"><?php echo esc_textarea( $note ); ?></textarea>
     </div>
 
     <?php if ( $post->post_status === 'publish' ) : ?>
     <div class="rmm-shortcode-box">
         📋 <strong>Shortcode:</strong>
-        <code>[restaurant_menu id="<?php echo esc_html( $shortcode_id ); ?>"]</code>
+        <code>[restaurant_menu id="<?php echo esc_html( $post->ID ); ?>"]</code>
         &nbsp;|&nbsp;
-        <code>[restaurant_menu id="<?php echo esc_html( $shortcode_id ); ?>" layout="two-column"]</code>
+        <code>[restaurant_menu id="<?php echo esc_html( $post->ID ); ?>" layout="two-column"]</code>
         &nbsp;|&nbsp;
-        <code>[restaurant_menu id="<?php echo esc_html( $shortcode_id ); ?>" layout="cards"]</code>
+        <code>[restaurant_menu id="<?php echo esc_html( $post->ID ); ?>" layout="cards"]</code>
     </div>
     <?php endif; ?>
     <?php
 }
 
-// ── Save meta ─────────────────────────────────────────────────────────────────
 add_action( 'save_post', 'rmm_save_meta', 10, 2 );
 function rmm_save_meta( $post_id, $post ) {
     if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return;
     if ( ! current_user_can( 'edit_post', $post_id ) ) return;
 
-    // Item details
     if ( isset( $_POST['rmm_item_nonce'] ) && wp_verify_nonce( $_POST['rmm_item_nonce'], 'rmm_save_item_details' ) ) {
         $fields = [
             '_rmm_price'      => sanitize_text_field( ltrim( $_POST['rmm_price']      ?? '', '$' ) ),
@@ -220,13 +211,11 @@ function rmm_save_meta( $post_id, $post ) {
         }
     }
 
-    // Menu assignments
     if ( isset( $_POST['rmm_menus_nonce'] ) && wp_verify_nonce( $_POST['rmm_menus_nonce'], 'rmm_save_item_menus' ) ) {
         $menus = array_map( 'absint', (array) ( $_POST['rmm_menus'] ?? [] ) );
         update_post_meta( $post_id, '_rmm_menus', $menus );
     }
 
-    // Menu display settings
     if ( isset( $_POST['rmm_menu_settings_nonce'] ) && wp_verify_nonce( $_POST['rmm_menu_settings_nonce'], 'rmm_save_menu_settings' ) ) {
         update_post_meta( $post_id, '_rmm_layout',        sanitize_text_field( $_POST['rmm_layout']        ?? 'list' ) );
         update_post_meta( $post_id, '_rmm_show_images',   isset( $_POST['rmm_show_images'] )   ? '1' : '0' );

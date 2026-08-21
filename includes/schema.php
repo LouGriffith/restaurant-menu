@@ -23,7 +23,6 @@ function rmm_build_schema( $menu, $items ) {
         $badges     = get_the_terms( $item->ID, 'rmm_badge' );
 
         $item_schema = [ '@type' => 'MenuItem', 'name' => $item->post_title ];
-
         if ( $short_desc ) $item_schema['description'] = wp_strip_all_tags( $short_desc );
         if ( $img_url )    $item_schema['image']       = $img_url;
         if ( $price ) {
@@ -59,7 +58,7 @@ function rmm_build_schema( $menu, $items ) {
     }
 
     $restaurant = [ '@type' => 'Restaurant', 'name' => $rest_name, 'url' => $rest_url ];
-    if ( $rest_phone )   $restaurant['telephone']    = $rest_phone;
+    if ( $rest_phone )   $restaurant['telephone']     = $rest_phone;
     if ( $rest_cuisine ) $restaurant['servesCuisine'] = $rest_cuisine;
     if ( $rest_addr ) {
         $restaurant['address'] = [ '@type' => 'PostalAddress', 'streetAddress' => $rest_addr ];

@@ -1,30 +1,13 @@
 <?php
-/**
- * GitHub Updater for Restaurant Menu Manager
- *
- * Polls a info.json manifest hosted on GitHub Pages.
- * When a new version is found, WordPress shows the standard
- * "Update Available" notice and handles the one-click update.
- */
-
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 class RMM_GitHub_Updater {
 
-    // ── Configuration ─────────────────────────────────────────────────────────
-    // Must match the installed folder name exactly: folder/main-file.php
     const PLUGIN_SLUG = 'restaurant-menu/restaurant-menu.php';
+    const INFO_URL    = 'https://LouGriffith.github.io/restaurant-menu/info.json';
+    const CACHE_KEY   = 'rmm_update_info';
+    const CACHE_TTL   = 43200;
 
-    // GitHub Pages URL to your info.json manifest
-    const INFO_URL = 'https://LouGriffith.github.io/restaurant-menu/info.json';
-
-    // Transient cache key
-    const CACHE_KEY = 'rmm_update_info';
-
-    // How long to cache the remote check (12 hours)
-    const CACHE_TTL = 43200;
-
-    // ── Bootstrap ─────────────────────────────────────────────────────────────
     public static function init() {
         $instance = new self();
         add_filter( 'pre_set_site_transient_update_plugins', [ $instance, 'check_for_update' ] );
@@ -33,7 +16,6 @@ class RMM_GitHub_Updater {
         add_action( 'upgrader_process_complete',             [ $instance, 'flush_cache' ], 10, 2 );
     }
 
-    // ── Fetch & cache remote info.json ────────────────────────────────────────
     private function get_remote_info() {
         $cached = get_transient( self::CACHE_KEY );
         if ( $cached !== false ) return $cached;
@@ -44,7 +26,6 @@ class RMM_GitHub_Updater {
         ] );
 
         if ( is_wp_error( $response ) || wp_remote_retrieve_response_code( $response ) !== 200 ) {
-            // Cache failure briefly so we don't hammer GitHub on every page load
             set_transient( self::CACHE_KEY, null, 300 );
             return null;
         }
@@ -56,11 +37,10 @@ class RMM_GitHub_Updater {
         return $body;
     }
 
-    // ── Hook: tell WordPress a new version is available ───────────────────────
     public function check_for_update( $transient ) {
         if ( empty( $transient->checked ) ) return $transient;
 
-        $info = $this->get_remote_info();
+        $info      = $this->get_remote_info();
         if ( ! $info ) return $transient;
 
         $installed = $transient->checked[ self::PLUGIN_SLUG ] ?? null;
@@ -73,8 +53,6 @@ class RMM_GitHub_Updater {
                 'new_version'  => $info->version,
                 'url'          => $info->homepage      ?? '',
                 'package'      => $info->download_url,
-                'icons'        => [],
-                'banners'      => [],
                 'tested'       => $info->tested        ?? '',
                 'requires'     => $info->requires      ?? '',
                 'requires_php' => $info->requires_php  ?? '',
@@ -84,27 +62,26 @@ class RMM_GitHub_Updater {
         return $transient;
     }
 
-    // ── Hook: populate the "View version X.X details" modal ──────────────────
     public function plugin_info( $result, $action, $args ) {
         if ( $action !== 'plugin_information' ) return $result;
-        if ( ! isset( $args->slug ) ) return $result;
+        if ( ! isset( $args->slug ) )           return $result;
         if ( $args->slug !== dirname( self::PLUGIN_SLUG ) ) return $result;
 
         $info = $this->get_remote_info();
         if ( ! $info ) return $result;
 
         return (object) [
-            'name'         => $info->name           ?? 'Restaurant Menu Manager',
-            'slug'         => dirname( self::PLUGIN_SLUG ),
-            'version'      => $info->version,
-            'author'       => $info->author         ?? '',
-            'homepage'     => $info->homepage       ?? '',
-            'requires'     => $info->requires       ?? '6.0',
-            'tested'       => $info->tested         ?? '',
-            'requires_php' => $info->requires_php   ?? '7.4',
-            'downloaded'   => 0,
-            'last_updated' => $info->last_updated   ?? '',
-            'sections'     => [
+            'name'          => $info->name           ?? 'Restaurant Menu Manager',
+            'slug'          => dirname( self::PLUGIN_SLUG ),
+            'version'       => $info->version,
+            'author'        => $info->author         ?? '',
+            'homepage'      => $info->homepage       ?? '',
+            'requires'      => $info->requires       ?? '6.0',
+            'tested'        => $info->tested         ?? '',
+            'requires_php'  => $info->requires_php   ?? '7.4',
+            'downloaded'    => 0,
+            'last_updated'  => $info->last_updated   ?? '',
+            'sections'      => [
                 'description' => $info->sections->description ?? '',
                 'changelog'   => $info->sections->changelog   ?? '',
             ],
@@ -112,24 +89,19 @@ class RMM_GitHub_Updater {
         ];
     }
 
-    // ── Hook: rename extracted folder to match plugin slug ───────────────────
-    // GitHub zips extract as "repo-name-tagname/" — this renames it correctly.
     public function after_install( $response, $hook_extra, $result ) {
         if ( ! isset( $hook_extra['plugin'] ) ) return $response;
         if ( $hook_extra['plugin'] !== self::PLUGIN_SLUG ) return $response;
 
         global $wp_filesystem;
-        $plugin_dir    = WP_PLUGIN_DIR . '/' . dirname( self::PLUGIN_SLUG );
+        $plugin_dir = WP_PLUGIN_DIR . '/' . dirname( self::PLUGIN_SLUG );
         $wp_filesystem->move( $result['destination'], $plugin_dir, true );
         $result['destination'] = $plugin_dir;
-
-        // Re-activate the plugin after update
         activate_plugin( self::PLUGIN_SLUG );
 
         return $result;
     }
 
-    // ── Hook: clear cache after a successful update ───────────────────────────
     public function flush_cache( $upgrader, $options ) {
         if (
             $options['action'] === 'update'
