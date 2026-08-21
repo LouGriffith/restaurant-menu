@@ -5,6 +5,22 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [1.6.0] - 2026-04-01
+
+### Fixed
+- Frontend sort: fixed wrong status element selector (`.rmm-fe-status` → `.rmm-sort-fe-status`)
+- Frontend sort: removed `handle` option that was conflicting with click events; sortable now works on the full item
+- Frontend sort: `ordered_ids` now sent as explicit indexed keys (`ordered_ids[0]=x`) so PHP receives a proper array
+- Frontend sort: `sortable('destroy')` now guarded with existence check to prevent JS errors
+- Frontend sort: save/cancel click handlers now properly unbound and rebound after each sort session
+- Frontend sort: sort bar inserted after section header (not before grid) so it appears in the right place
+- Admin sort: drag handles now added to rows *before* sortable is initialized, fixing the handle not being found
+- Admin sort: placeholder now gets a proper `<td colspan>` to maintain row height during drag
+- Admin sort: `ordered_ids` same explicit indexed key fix as frontend
+- Admin sort: notice bar shown via `css('display','flex')` instead of `.show()` to preserve flex layout
+
+---
+
 ## [1.5.9] - 2026-04-01
 
 ### Added
